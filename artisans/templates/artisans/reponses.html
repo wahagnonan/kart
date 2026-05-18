@@ -2,19 +2,19 @@
 {% block title %}Réponses{% endblock %}
 
 {% block content %}
-<div class="p-8 max-w-6xl mx-auto">
+<div class="px-4 py-6 sm:p-8 max-w-6xl mx-auto">
 
-  <div class="flex items-center justify-between mb-8">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
     <div>
-      <h2 class="text-3xl font-bold text-earth-800" style="font-family:Georgia,serif">Réponses</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold text-earth-800" style="font-family:Georgia,serif">Réponses</h2>
       <p class="text-earth-500 mt-1">{{ total }} artisan{{ total|pluralize }} trouvé{{ total|pluralize }}</p>
     </div>
     <div class="flex gap-2">
-      <a href="{% url 'export_json' %}" class="inline-flex items-center gap-2 bg-earth-600 hover:bg-earth-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm">
+      <a href="{% url 'export_json' %}" class="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 bg-earth-600 hover:bg-earth-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
         JSON
       </a>
-      <a href="{% url 'export_csv' %}" class="inline-flex items-center gap-2 bg-white hover:bg-earth-50 text-earth-700 border border-earth-300 font-semibold px-4 py-2 rounded-lg transition-colors text-sm">
+      <a href="{% url 'export_csv' %}" class="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 bg-white hover:bg-earth-50 text-earth-700 border border-earth-300 font-semibold px-4 py-2 rounded-lg transition-colors text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         CSV
       </a>
@@ -22,8 +22,8 @@
   </div>
 
   <!-- Filtres -->
-  <form method="get" class="flex gap-3 mb-6">
-    <div class="relative flex-1">
+  <form method="get" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_auto_auto_auto_auto] gap-3 mb-6">
+    <div class="relative sm:col-span-2 lg:col-span-1">
       <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-earth-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       <input type="text" name="q" value="{{ search }}" placeholder="Rechercher..."
         class="w-full border border-earth-200 rounded-lg pl-9 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-earth-400 text-sm bg-white"/>
@@ -42,16 +42,16 @@
     </select>
     <button type="submit" class="bg-earth-600 hover:bg-earth-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm">Filtrer</button>
     {% if search or ville_f or metier_f %}
-    <a href="{% url 'reponses' %}" class="bg-white hover:bg-earth-50 text-earth-600 border border-earth-300 font-semibold px-4 py-2.5 rounded-lg transition-colors text-sm">✕</a>
+    <a href="{% url 'reponses' %}" class="inline-flex items-center justify-center bg-white hover:bg-earth-50 text-earth-600 border border-earth-300 font-semibold px-4 py-2.5 rounded-lg transition-colors text-sm">✕</a>
     {% endif %}
   </form>
 
-  <div class="flex gap-6">
+  <div class="flex flex-col xl:flex-row gap-6">
     <!-- Table -->
     <div class="flex-1 min-w-0">
       {% if artisans %}
-      <div class="bg-white rounded-2xl shadow-sm border border-earth-100 overflow-hidden">
-        <table class="w-full text-sm">
+      <div class="bg-white rounded-2xl shadow-sm border border-earth-100 overflow-x-auto">
+        <table class="w-full min-w-[640px] text-sm">
           <thead class="bg-earth-50 border-b border-earth-100">
             <tr>
               <th class="text-left px-4 py-3 text-earth-600 font-semibold text-xs uppercase tracking-wide">ID</th>
@@ -85,8 +85,8 @@
 
     <!-- Detail panel -->
     {% if artisan_detail %}
-    <div class="w-80 shrink-0">
-      <div class="bg-white rounded-2xl shadow-sm border border-earth-100 overflow-hidden sticky top-6">
+    <div class="w-full xl:w-80 shrink-0">
+      <div class="bg-white rounded-2xl shadow-sm border border-earth-100 overflow-hidden xl:sticky xl:top-6">
         <div class="px-5 py-4 border-b border-earth-100 flex items-center justify-between">
           <div>
             <p class="font-semibold text-earth-800">{{ artisan_detail.metier }}</p>

@@ -20,7 +20,7 @@ import os
 
 # Ajoute le répertoire du projet au chemin Python
 # IMPORTANT: Remplacer 'username' par votre nom d'utilisateur PythonAnywhere
-project_home = '/home/username/kart'
+project_home = '/home/soro/kart'
 if project_home not in sys.path:
     sys.path.insert(0, project_home)
 
@@ -45,44 +45,3 @@ application = get_wsgi_application()
 # NOTES IMPORTANTES POUR PYTHONANYWHERE
 # ============================================================================
 
-"""
-1. STRUCTURE DES RÉPERTOIRES
-   /home/username/kart/
-   ├── manage.py
-   ├── BACK/
-   │   ├── settings.py
-   │   ├── wsgi.py
-   │   └── ...
-   ├── artisans/
-   │   ├── static/
-   │   │   └── css/
-   │   │       ├── main.css
-   │   │       └── output.css (généré par Tailwind)
-   │   └── templates/
-   └── staticfiles/ (collecté par collectstatic)
-
-2. VIRTUALENV
-   Créer avec: mkvirtualenv --python=/usr/bin/python3.10 kart
-   Basculer avec: workon kart
-
-3. FICHIERS STATIQUES
-   Exécutez: python manage.py collectstatic --noinput
-   
-   Dans PythonAnywhere Web App configuration:
-   URL: /static/
-   Directory: /home/username/kart/staticfiles
-
-4. TAILWIND CSS
-   Avant chaque déploiement:
-   npm run build
-   python manage.py collectstatic --noinput
-
-5. DEBUG EN PRODUCTION
-   Dans settings.py, mettre: DEBUG = False
-   Ajouter ALLOWED_HOSTS: ALLOWED_HOSTS = ['username.pythonanywhere.com', 'localhost']
-
-6. PROBLÈMES COURANTS
-   - Module not found: Vérifier le virtualenv est activé
-   - CSS manquants: Exécutez collectstatic
-   - CSRF errors: Vérifier ALLOWED_HOSTS dans settings.py
-"""

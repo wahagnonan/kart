@@ -2,10 +2,10 @@
 {% block title %}Nouvel artisan{% endblock %}
 
 {% block content %}
-<div class="p-8 max-w-2xl mx-auto">
+<div class="px-4 py-6 sm:p-8 max-w-2xl mx-auto">
 
   <div class="mb-8">
-    <h2 class="text-3xl font-bold text-earth-800" style="font-family:Georgia,serif">Nouvel artisan</h2>
+    <h2 class="text-2xl sm:text-3xl font-bold text-earth-800" style="font-family:Georgia,serif">Nouvel artisan</h2>
     <p class="text-earth-500 mt-1">Renseignez les informations et les réponses de l'artisan</p>
   </div>
 
@@ -13,7 +13,7 @@
     {% csrf_token %}
 
     <!-- Infos de base -->
-    <div class="bg-white rounded-2xl shadow-sm border border-earth-100 p-6 mb-5">
+    <div class="bg-white rounded-2xl shadow-sm border border-earth-100 p-5 sm:p-6 mb-5">
       <h3 class="font-semibold text-earth-700 mb-4 flex items-center gap-2">
         <span class="w-6 h-6 bg-earth-500 text-white text-xs font-bold rounded-full flex items-center justify-center">1</span>
         Informations de contact
@@ -61,7 +61,7 @@
 
     <!-- Questions -->
     {% if questions %}
-    <div class="bg-white rounded-2xl shadow-sm border border-earth-100 p-6 mb-5">
+    <div class="bg-white rounded-2xl shadow-sm border border-earth-100 p-5 sm:p-6 mb-5">
       <h3 class="font-semibold text-earth-700 mb-4 flex items-center gap-2">
         <span class="w-6 h-6 bg-earth-500 text-white text-xs font-bold rounded-full flex items-center justify-center">2</span>
         Réponses aux questions
@@ -88,7 +88,7 @@
 
     <!-- Submit -->
     <div class="flex justify-end">
-      <button type="submit" class="bg-earth-600 hover:bg-earth-700 text-white font-semibold px-7 py-3 rounded-xl transition-colors flex items-center gap-2">
+      <button type="submit" class="w-full sm:w-auto justify-center bg-earth-600 hover:bg-earth-700 text-white font-semibold px-7 py-3 rounded-xl transition-colors flex items-center gap-2">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
         Enregistrer l'artisan
       </button>

@@ -2,35 +2,35 @@
 {% block title %}Gestion des questions{% endblock %}
 
 {% block content %}
-<div class="p-8 max-w-3xl mx-auto">
+<div class="px-4 py-6 sm:p-8 max-w-3xl mx-auto">
 
-  <div class="flex items-center justify-between mb-8">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
     <div>
-      <h2 class="text-3xl font-bold text-earth-800" style="font-family:Georgia,serif">Questions</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold text-earth-800" style="font-family:Georgia,serif">Questions</h2>
       <p class="text-earth-500 mt-1">{{ questions|length }} question{{ questions|length|pluralize }} au total</p>
     </div>
     <button onclick="document.getElementById('addForm').classList.toggle('hidden')"
-      class="bg-earth-600 hover:bg-earth-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm">
+      class="w-full sm:w-auto justify-center bg-earth-600 hover:bg-earth-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
       Ajouter
     </button>
   </div>
 
   <!-- Formulaire ajout -->
-  <div id="addForm" class="hidden bg-white rounded-2xl shadow-sm border-2 border-earth-300 p-6 mb-6">
+  <div id="addForm" class="hidden bg-white rounded-2xl shadow-sm border-2 border-earth-300 p-5 sm:p-6 mb-6">
     <h3 class="font-semibold text-earth-700 mb-3">Nouvelle question</h3>
     <form method="post" action="{% url 'question_ajouter' %}">
       {% csrf_token %}
       <textarea name="texte" rows="2" required autofocus
         placeholder="Rédigez votre question..."
         class="w-full border border-earth-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-earth-400 text-sm bg-white resize-none mb-3"></textarea>
-      <div class="flex gap-2 justify-end">
+      <div class="flex flex-col sm:flex-row gap-2 sm:justify-end">
         <button type="button" onclick="document.getElementById('addForm').classList.add('hidden')"
           class="bg-white hover:bg-earth-50 text-earth-700 border border-earth-300 font-semibold px-4 py-2 rounded-lg transition-colors text-sm">
           Annuler
         </button>
         <button type="submit"
-          class="bg-earth-600 hover:bg-earth-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm flex items-center gap-1">
+          class="bg-earth-600 hover:bg-earth-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm flex items-center justify-center gap-1">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
           Enregistrer
         </button>
@@ -43,10 +43,10 @@
   <div class="space-y-3">
     {% for q in questions %}
     <div class="bg-white rounded-2xl shadow-sm border border-earth-100 p-4 {% if not q.active %}opacity-50{% endif %}" id="q-{{ q.id }}">
-      <div class="flex items-start gap-4">
+      <div class="flex flex-wrap items-start gap-4">
 
         <!-- Ordre + flèches -->
-        <div class="flex flex-col items-center gap-1 pt-0.5 shrink-0">
+        <div class="order-1 flex flex-col items-center gap-1 pt-0.5 shrink-0">
           <form method="post" action="{% url 'question_monter' q.pk %}">
             {% csrf_token %}
             <button type="submit" class="text-earth-300 hover:text-earth-600 transition-colors {% if forloop.first %}invisible{% endif %}" title="Monter">
@@ -63,7 +63,7 @@
         </div>
 
         <!-- Texte / formulaire d'édition -->
-        <div class="flex-1 min-w-0">
+        <div class="order-2 flex-1 min-w-0">
           <div id="view-{{ q.id }}">
             <p class="text-earth-800 text-sm leading-relaxed">{{ q.texte }}</p>
           </div>
@@ -72,7 +72,7 @@
               {% csrf_token %}
               <textarea name="texte" rows="2"
                 class="w-full border border-earth-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-earth-400 text-sm bg-white resize-none mb-2">{{ q.texte }}</textarea>
-              <div class="flex gap-2">
+              <div class="flex flex-col sm:flex-row gap-2">
                 <button type="submit" class="bg-earth-600 hover:bg-earth-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">Sauvegarder</button>
                 <button type="button" onclick="toggleEdit('{{ q.id }}')" class="bg-white hover:bg-earth-50 text-earth-600 border border-earth-300 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">Annuler</button>
               </div>
@@ -81,7 +81,7 @@
         </div>
 
         <!-- Réponses liées -->
-        <div class="mt-4 border-t border-earth-100 pt-4">
+        <div class="order-4 w-full mt-2 sm:ml-11 border-t border-earth-100 pt-4">
           <p class="text-xs text-earth-500 mb-2">
             <strong>{{ q.reponses.all|length }}</strong> réponse{{ q.reponses.all|length|pluralize }}
           </p>
@@ -96,7 +96,7 @@
         </div>
 
         <!-- Actions -->
-        <div class="flex items-center gap-1 shrink-0">
+        <div class="order-3 flex items-center gap-1 shrink-0 ml-auto">
           <!-- Toggle actif -->
           <form method="post" action="{% url 'question_toggle' q.pk %}">
             {% csrf_token %}
@@ -128,7 +128,7 @@
     {% endfor %}
   </div>
   {% else %}
-  <div class="bg-white rounded-2xl shadow-sm border border-earth-100 p-16 text-center text-earth-400">
+  <div class="bg-white rounded-2xl shadow-sm border border-earth-100 p-8 sm:p-16 text-center text-earth-400">
     Aucune question. Cliquez sur "Ajouter" pour commencer.
   </div>
   {% endif %}
