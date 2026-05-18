@@ -18,11 +18,6 @@ db.sqlite3
 /media/
 /staticfiles/
 
-# Node/npm
-node_modules/
-package-lock.json
-npm-debug.log
-
 # IDE
 .vscode/
 .idea/
@@ -30,9 +25,6 @@ npm-debug.log
 *.swo
 *~
 .DS_Store
-
-# Tailwind CSS
-artisans/static/css/output.css
 
 # Environment variables
 .env
