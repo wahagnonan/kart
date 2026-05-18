@@ -1,0 +1,112 @@
+{% extends 'artisans/base.html' %}
+{% block title %}Nouvel artisan{% endblock %}
+
+{% block content %}
+<div class="p-8 max-w-2xl mx-auto">
+
+  <div class="mb-8">
+    <h2 class="text-3xl font-bold text-earth-800" style="font-family:Georgia,serif">Nouvel artisan</h2>
+    <p class="text-earth-500 mt-1">Renseignez les informations et les réponses de l'artisan</p>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- Infos de base -->
+    <div class="bg-white rounded-2xl shadow-sm border border-earth-100 p-6 mb-5">
+      <h3 class="font-semibold text-earth-700 mb-4 flex items-center gap-2">
+        <span class="w-6 h-6 bg-earth-500 text-white text-xs font-bold rounded-full flex items-center justify-center">1</span>
+        Informations de contact
+      </h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold text-earth-800 mb-1.5">Contact * <span class="text-xs font-normal text-earth-400">(numéro ou email)</span></label>
+          <input type="text" name="contact" required
+            value="{{ post.contact|default:'' }}"
+            placeholder="ex: 07 00 00 00 00"
+            class="w-full border border-earth-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-earth-400 text-sm bg-white"/>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-earth-800 mb-1.5">Ville *</label>
+          <select name="ville" id="ville-select" required onchange="toggleAutreField('ville')"
+            class="w-full border border-earth-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-earth-400 text-sm bg-white">
+            <option value="">— Choisir une ville —</option>
+            {% for v in villes %}
+            <option value="{{ v }}" {% if post.ville == v %}selected{% endif %}>{{ v }}</option>
+            {% endfor %}
+          </select>
+          <div id="ville-autre-container" class="mt-3" style="display: {% if post.ville == 'Autre' %}block{% else %}none{% endif %};">
+            <input type="text" name="ville_autre" placeholder="Précisez une autre ville"
+              value="{{ ville_autre }}"
+              class="w-full border border-earth-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-earth-400 text-sm bg-white" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-earth-800 mb-1.5">Métier *</label>
+          <select name="metier" id="metier-select" required onchange="toggleAutreField('metier')"
+            class="w-full border border-earth-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-earth-400 text-sm bg-white">
+            <option value="">— Choisir un métier —</option>
+            {% for m in metiers %}
+            <option value="{{ m }}" {% if post.metier == m %}selected{% endif %}>{{ m }}</option>
+            {% endfor %}
+          </select>
+          <div id="metier-autre-container" class="mt-3" style="display: {% if post.metier == 'Autre' %}block{% else %}none{% endif %};">
+            <input type="text" name="metier_autre" placeholder="Précisez un autre métier"
+              value="{{ metier_autre }}"
+              class="w-full border border-earth-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-earth-400 text-sm bg-white" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Questions -->
+    {% if questions %}
+    <div class="bg-white rounded-2xl shadow-sm border border-earth-100 p-6 mb-5">
+      <h3 class="font-semibold text-earth-700 mb-4 flex items-center gap-2">
+        <span class="w-6 h-6 bg-earth-500 text-white text-xs font-bold rounded-full flex items-center justify-center">2</span>
+        Réponses aux questions
+      </h3>
+      <div class="space-y-5">
+        {% for q in questions %}
+        <div>
+          <label class="block text-sm font-semibold text-earth-800 mb-1.5">
+            <span class="inline-flex items-center justify-center w-5 h-5 bg-earth-100 text-earth-600 text-xs font-bold rounded-full mr-1">{{ q.ordre }}</span>
+            {{ q.texte }}
+          </label>
+          <textarea name="question_{{ q.id }}" rows="2"
+            placeholder="Réponse de l'artisan..."
+            class="w-full border border-earth-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-earth-400 text-sm bg-white resize-none">{{ post|default_if_none:''|default:''}}{% if post %}{{ post|dictsort:'question_'|default:'' }}{% endif %}</textarea>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-sm text-amber-700">
+      ⚠️ Aucune question active. <a href="{% url 'admin_questions' %}" class="underline font-semibold">Gérer les questions →</a>
+    </div>
+    {% endif %}
+
+    <!-- Submit -->
+    <div class="flex justify-end">
+      <button type="submit" class="bg-earth-600 hover:bg-earth-700 text-white font-semibold px-7 py-3 rounded-xl transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        Enregistrer l'artisan
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+function toggleAutreField(field) {
+  var select = document.getElementById(field + '-select');
+  var container = document.getElementById(field + '-autre-container');
+  if (!select || !container) return;
+  container.style.display = select.value === 'Autre' ? 'block' : 'none';
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  toggleAutreField('ville');
+  toggleAutreField('metier');
+});
+</script>
+{% endblock %}
