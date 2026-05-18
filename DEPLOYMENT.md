@@ -24,13 +24,12 @@ pip install -r requirements.txt
 
 ### 3. Compiler le CSS Tailwind
 
-```bash
-# Installer les dépendances Node.js
-npm install
+**Pas nécessaire!** Le projet utilise Tailwind CSS via CDN.
 
-# Compiler le CSS
-npm run build
-```
+Les fichiers suivants sont optionnels (pour une future optimisation):
+- `tailwind.config.js`
+- `postcss.config.js`
+- `build.js`
 
 ### 4. Configurer Django
 
@@ -100,47 +99,52 @@ Allez à Dashboard > Web et cliquez sur "Reload"
 
 ## Configuration de Tailwind CSS
 
-### Build automatique
+Le projet utilise **Tailwind CSS via CDN** - **aucune compilation nécessaire!**
 
-Après chaque modification des templates, exécutez:
+La configuration est dans `artisans/templates/artisans/base.html`:
 
-```bash
-npm run build
+```html
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: { earth, forest }
+      }
+    }
+  }
+</script>
 ```
 
-Cela compilera tous les fichiers HTML et générera `artisans/static/css/output.css`.
+### Avantages pour PythonAnywhere
 
-### Développement local
-
-Pour le watch mode (recompilation automatique):
-
-```bash
-npm run watch
-```
+- ✅ Aucun processus de build requis
+- ✅ Aucune dépendance Node.js nécessaire
+- ✅ Configuration en temps réel
+- ✅ CDN global pour les meilleures performances
 
 ## Structure des fichiers statiques
 
 ```
 artisans/
 ├── static/
-│   └── css/
-│       ├── main.css (fichier source Tailwind, ne pas éditer)
-│       └── output.css (fichier compilé, charger dans Django)
+│   └── (fichiers statiques Django: images, fonts, etc.)
 ├── templates/
 │   └── artisans/
-│       ├── base.html
+│       ├── base.html (Tailwind CDN chargé ici)
 │       ├── dashboard.html
 │       └── ...
 ```
 
 ## Important pour PythonAnywhere
 
-1. **Ne pas committer `output.css`** - c'est un fichier généré
-2. **Toujours exécuter `npm run build`** avant de deployer
-3. **Vérifier `collectstatic`** - assurez-vous que les fichiers statiques sont collectés
-4. **DEBUG = False** en production - modifiez `settings.py` avant le lancement
+1. **DEBUG = False** en production - modifiez `settings.py` avant le lancement
+2. **ALLOWED_HOSTS** - Ajoutez votre domaine PythonAnywhere
+3. **SECRET_KEY** - Remplacez par une clé sécurisée
+4. **Pas besoin de npm ou Node.js** - Le CDN gère Tailwind
 
 ### Configuration DEBUG
+
 
 ```python
 # BACK/settings.py

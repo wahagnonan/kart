@@ -63,13 +63,7 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-### 7. Compiler le CSS Tailwind
-
-```bash
-npm run build
-```
-
-### 8. Démarrer le serveur de développement
+### 6. Lancer le serveur de développement
 
 ```bash
 python manage.py runserver
@@ -119,12 +113,6 @@ kart/
 ### Développement
 
 ```bash
-# Compiler Tailwind CSS
-npm run build
-
-# Recompiler automatiquement
-npm run watch
-
 # Démarrer Django
 python manage.py runserver
 
@@ -141,23 +129,48 @@ python manage.py migrate
 ### Production (PythonAnywhere)
 
 ```bash
+# Pas besoin de compilar le CSS (utilise le CDN)
+
+# Collecter les fichiers statiques (si vous avez des fichiers custom)
+python manage.py collectstatic --noinput
+```
+
+### Optionnel: Build local de Tailwind CSS
+
+Si vous voulez optimiser le CSS en production:
+
+```bash
 # Compiler le CSS
 npm run build
 
-# Collecter les fichiers statiques
-python manage.py collectstatic --noinput
-
-# Redémarrer l'application
-# Depuis le Dashboard PythonAnywhere
+# Mode watch (recompilation automatique)
+npm run watch
 ```
 
 ## 🎨 Tailwind CSS
 
-### Fichier source
-- **`artisans/static/css/main.css`** - Fichier source Tailwind (ne pas éditer)
+### Approche CDN (Actuellement utilisée ✅)
 
-### Fichier compilé
-- **`artisans/static/css/output.css`** - CSS compilé (généré par npm run build)
+Le projet utilise **Tailwind CSS via CDN**, configuré dans `artisans/templates/artisans/base.html`:
+
+```html
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: { earth, forest }
+      }
+    }
+  }
+</script>
+```
+
+**Avantages:**
+- ✅ Zéro compilation nécessaire
+- ✅ Configuration en temps réel
+- ✅ Parfait pour le développement et la production
+- ✅ Déploiement simplifié (pas npm needed on PythonAnywhere)
 
 ### Couleurs personnalisées
 
